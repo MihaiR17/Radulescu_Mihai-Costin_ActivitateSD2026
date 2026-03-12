@@ -1,0 +1,4 @@
+1,4,15500.5,Logan,Ion,A
+2,2,45000.0,Porsche,Andrei,B
+3,5,22000.7,Skoda,Maria,A
+4,3,12000.0,Fiat,Elena,C
