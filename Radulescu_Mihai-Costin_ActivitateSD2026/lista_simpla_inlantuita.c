@@ -131,24 +131,101 @@ void dezalocarelistamasini(Nod* *cap) {
 	
 }
 
-float calculeazapretmediu(/*lista de masini*/) {
-	//calculeaza pretul mediu al masinilor din lista.
+float calculeazapretmediu(Nod* cap) {
+	float suma = 0;
+	int contor = 0;
+	while (cap)
+	{
+		suma += cap->info.pret;
+		contor++;
+		cap = cap->next;
+	}
+	if (contor > 0)
+	{
+		return suma / contor;
+	}
 	return 0;
+	
 }
 
-void stergemasinidinseria(/*lista masini*/ char seriecautata) {
-	//sterge toate masinile din lista care au seria primita ca parametru.
-	//tratati situatia ca masina se afla si pe prima pozitie, si pe ultima pozitie
+void stergemasinidinseria(Nod** cap, char seriecautata) {
+	
+		while ((*cap) && (*cap)->info.serie == seriecautata)
+		{
+			Nod* aux = *cap;
+			(*cap) = aux->next;
+			if (aux->info.numesofer)
+			{
+				free(aux->info.numesofer);
+			}
+			if (aux->info.model)
+			{
+				free(aux->info.model);
+			}
+			free(aux);
+		}
+		if ((*cap))
+		{
+
+			Nod* p = *cap;
+			while (p)
+			{
+
+				while (p->next && p->next->info.serie != seriecautata)
+				{
+					p = p->next;
+				}
+				if (p->next)
+				{
+					Nod* aux = p->next;
+					p->next = aux->next;
+					if (aux->info.numesofer)
+					{
+						free(aux->info.numesofer);
+					}
+					if (aux->info.model)
+					{
+						free(aux->info.model);
+					}
+					free(aux);
+				}
+				else
+				{
+					p = NULL;
+				}
+			}
+		}
+	
 }
 
-float calculeazapretulmasinilorunuisofer(/*lista masini*/ const char* numesofer) {
-	//calculeaza pretul tuturor masinilor unui sofer.
-	return 0;
+float calculeazapretulmasinilorunuisofer(Nod* cap, const char* numesofer) {
+	float suma = 0;
+	while (cap)
+	{
+		if (strcmp(cap->info.numesofer, numesofer) == 0)
+		{
+			suma += cap->info.pret;
+		}
+
+		cap = cap->next;
+
+
+	}
+	return suma;
 }
 
 int main() {
 	Nod* cap = citirelistamasinidinfisier("masini.txt");
 	afisarelistamasini(cap);
+	printf("Pretul mediu este : %.2f\n", calculeazapretmediu(cap));
+	printf("Pretul masinilor unui sofer este : %.2f\n", calculeazapretulmasinilorunuisofer(cap,"Gigel"));
+	printf("Stergere serie A\n");
+	stergemasinidinseria(&cap, 'A');
+	afisarelistamasini(cap);
+	printf("Stergere serie B\n");
+	stergemasinidinseria(&cap, 'B');
+	afisarelistamasini(cap);
+	
 	dezalocarelistamasini(&cap);
 	return 0;
 }
