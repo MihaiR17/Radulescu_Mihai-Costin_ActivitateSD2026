@@ -1,0 +1,7 @@
+1,1000,Apple,X
+2,3000,Samsung,A
+3,2500,Huawei,S
+4,4000,Apple,S
+5,600,Allview,A
+6,1000,Motorola,X
+7,400,Samsung,E
